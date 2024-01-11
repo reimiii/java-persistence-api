@@ -30,5 +30,9 @@ create table categories
     description varchar(500)
 ) engine InnoDB;
 
+alter table categories
+    add column created_at timestamp,
+    add column updated_at timestamp;
+
 select *
 from categories;
