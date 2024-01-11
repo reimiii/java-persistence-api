@@ -62,3 +62,14 @@ create table members
 
 select *
 from members;
+
+create table departments
+(
+    company_id    varchar(100) not null,
+    department_id varchar(100) not null,
+    name          varchar(150) not null,
+    primary key (company_id, department_id)
+) engine innodb;
+
+select *
+from departments;
