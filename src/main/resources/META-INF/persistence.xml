@@ -10,6 +10,7 @@
 
         <!-- Entity Classes -->
         <class>franxx.code.jpa.entity.Customer</class>
+        <class>franxx.code.jpa.entity.Category</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

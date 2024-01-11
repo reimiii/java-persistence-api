@@ -15,3 +15,13 @@ alter table customers
 
 select *
 from customers;
+
+create table categories
+(
+    id          int          not null auto_increment primary key,
+    name        varchar(100) not null,
+    description varchar(500)
+) engine InnoDB;
+
+select *
+from categories;
