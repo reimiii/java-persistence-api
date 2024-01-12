@@ -73,3 +73,15 @@ create table departments
 
 select *
 from departments;
+
+create table hobbies
+(
+    id        int          not null auto_increment primary key,
+    member_id int          not null,
+    name      varchar(100) not null,
+    foreign key fk_members_hobbies (member_id)
+        references members (id)
+) engine innodb;
+
+select *
+from hobbies;
