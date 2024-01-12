@@ -10,6 +10,7 @@ import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -54,6 +55,32 @@ public class CollectionTest {
         Member member = entityManager.find(Member.class, 2);
 
         member.getHobbies().add("Sleep");
+
+        entityManager.merge(member);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+
+    }
+
+    @Test
+    void updateSkills() {
+
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Member member = entityManager.find(Member.class, 1);
+
+        member.setSkills(new HashMap<>());
+        member.getSkills().put("Java", 85);
+        member.getSkills().put("C", 20);
+        member.getSkills().put("Linuk", 85);
 
         entityManager.merge(member);
 
