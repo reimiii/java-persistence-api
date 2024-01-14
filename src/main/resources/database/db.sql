@@ -98,3 +98,33 @@ create table skills
 
 select *
 from skills;
+
+create table credentials
+(
+    id         varchar(100) not null primary key,
+    email      varchar(150) not null,
+    password   varchar(150) not null
+) engine innodb;
+
+select *
+from credentials;
+
+create table users
+(
+    id         varchar(100) not null primary key,
+    name       varchar(150) not null
+) engine innodb;
+
+select *
+from users;
+
+create table wallet
+(
+    id         int           not null auto_increment primary key,
+    user_id    varchar(100) not null,
+    balance    bigint        not null,
+    foreign key fk_users_wallet (user_id) references users (id)
+) engine innodb;
+
+select *
+from wallet;
