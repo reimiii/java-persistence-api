@@ -22,6 +22,9 @@ public class Member {
     @Embedded
     private Name name;
 
+    @Transient
+    private String fullName;
+
     @ElementCollection
     @CollectionTable(
             name = "hobbies",
@@ -38,4 +41,9 @@ public class Member {
     @MapKeyColumn(name = "name")
     @Column(name = "value")
     private Map<String, Integer> skills;
+
+    @PostLoad
+    public void postLoad() {
+        fullName = name.getTitle() + ". " + name.getFirstName();
+    }
 }

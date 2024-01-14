@@ -2,6 +2,7 @@ package franxx.code.jpa;
 
 import franxx.code.jpa.entity.Category;
 import franxx.code.jpa.entity.Customer;
+import franxx.code.jpa.entity.Member;
 import franxx.code.jpa.util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -26,6 +27,25 @@ public class EntityListenerTest {
         category.setName("Contoh");
 
         entityManager.persist(category);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void createEntity() {
+
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Member member = entityManager.find(Member.class, 1);
+        assertEquals("MR. Mee", member.getFullName());
 
         transaction.commit();
 
