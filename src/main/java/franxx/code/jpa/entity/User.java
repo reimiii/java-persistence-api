@@ -23,4 +23,7 @@ public class User {
             referencedColumnName = "id"
     )
     private Credential credential;
+
+    @OneToOne(mappedBy = "user")
+    private Wallet wallet;
 }
