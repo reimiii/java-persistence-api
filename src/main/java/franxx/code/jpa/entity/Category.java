@@ -1,5 +1,7 @@
 package franxx.code.jpa.entity;
 
+import franxx.code.jpa.contract.UpdatedAtAware;
+import franxx.code.jpa.listener.UpdatedAtListener;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,10 @@ import java.util.Calendar;
 @Table(name = "categories")
 @Data
 @NoArgsConstructor
-public class Category {
+@EntityListeners({
+        UpdatedAtListener.class
+})
+public class Category implements UpdatedAtAware {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
