@@ -14,6 +14,11 @@
         <class>franxx.code.jpa.entity.Image</class>
         <class>franxx.code.jpa.entity.Member</class>
         <class>franxx.code.jpa.entity.Department</class>
+        <class>franxx.code.jpa.entity.Wallet</class>
+        <class>franxx.code.jpa.entity.User</class>
+        <class>franxx.code.jpa.entity.Credential</class>
+        <class>franxx.code.jpa.entity.Product</class>
+        <class>franxx.code.jpa.entity.Brand</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

@@ -101,9 +101,9 @@ from skills;
 
 create table credentials
 (
-    id         varchar(100) not null primary key,
-    email      varchar(150) not null,
-    password   varchar(150) not null
+    id       varchar(100) not null primary key,
+    email    varchar(150) not null,
+    password varchar(150) not null
 ) engine innodb;
 
 select *
@@ -111,8 +111,8 @@ from credentials;
 
 create table users
 (
-    id         varchar(100) not null primary key,
-    name       varchar(150) not null
+    id   varchar(100) not null primary key,
+    name varchar(150) not null
 ) engine innodb;
 
 select *
@@ -120,11 +120,34 @@ from users;
 
 create table wallet
 (
-    id         int           not null auto_increment primary key,
-    user_id    varchar(100) not null,
-    balance    bigint        not null,
+    id      int          not null auto_increment primary key,
+    user_id varchar(100) not null,
+    balance bigint       not null,
     foreign key fk_users_wallet (user_id) references users (id)
 ) engine innodb;
 
 select *
 from wallet;
+
+create table brands
+(
+    id          varchar(100) not null primary key,
+    name        varchar(100) not null,
+    description varchar(500)
+) engine innodb;
+
+select *
+from brands;
+
+create table products
+(
+    id          varchar(100) not null primary key,
+    brand_id    varchar(100) not null,
+    name        varchar(100) not null,
+    price       bigint       not null,
+    description varchar(500),
+    foreign key fk_brands_products (brand_id) references brands (id)
+) engine innodb;
+
+select *
+from products;
