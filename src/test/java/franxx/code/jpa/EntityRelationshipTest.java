@@ -200,4 +200,23 @@ public class EntityRelationshipTest {
         entityManagerFactory.close();
     }
 
+
+    @Test
+    void fetch() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Product product = entityManager.find(Product.class, "001");
+//        Brand brand = entityManager.find(Brand.class, "samsung");
+        assertNotNull(product.getBrand().getName());
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
