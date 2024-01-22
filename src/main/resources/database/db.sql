@@ -164,3 +164,15 @@ create table users_like_products
 
 select *
 from users_like_products;
+
+create table employees
+(
+    id             varchar(100) not null primary key,
+    type           varchar(50)  not null,
+    name           varchar(100) not null,
+    total_manager  int,
+    total_employee int
+) engine innodb;
+
+select *
+from employees;

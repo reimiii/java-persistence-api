@@ -19,6 +19,9 @@
         <class>franxx.code.jpa.entity.Credential</class>
         <class>franxx.code.jpa.entity.Product</class>
         <class>franxx.code.jpa.entity.Brand</class>
+        <class>franxx.code.jpa.entity.Employee</class>
+        <class>franxx.code.jpa.entity.Manager</class>
+        <class>franxx.code.jpa.entity.VicePresident</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
