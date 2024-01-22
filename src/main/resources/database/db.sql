@@ -151,3 +151,16 @@ create table products
 
 select *
 from products;
+
+
+create table users_like_products
+(
+    user_id    varchar(100) not null,
+    product_id varchar(100) not null,
+    foreign key fk_users_users_like_products (user_id) references users (id),
+    foreign key fk_products_users_like_products (product_id) references products (id),
+    primary key (user_id, product_id)
+) engine innodb;
+
+select *
+from users_like_products;

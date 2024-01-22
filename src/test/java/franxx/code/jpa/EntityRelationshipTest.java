@@ -7,6 +7,10 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EntityRelationshipTest {
@@ -139,5 +143,61 @@ public class EntityRelationshipTest {
         entityManagerFactory.close();
     }
 
+
+    @Test
+    void manyToManyInsert() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        User user = entityManager.find(User.class, "001");
+
+        Collection<Product> productCollection = new HashSet<>();
+        productCollection.add(entityManager.find(Product.class, "001"));
+        productCollection.add(entityManager.find(Product.class, "002"));
+
+        user.setLikes(productCollection);
+
+        entityManager.merge(user);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void manyToManyUpdate() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        User user = entityManager.find(User.class, "001");
+
+        // my version
+//        Product next = user.getLikes().iterator().next();
+//        System.out.println(next.getName());
+//        System.out.println(next.getId());
+
+        Product product = null;
+        for (Product like : user.getLikes()) {
+            product = like;
+            break;
+        }
+
+        user.getLikes().remove(product);
+        entityManager.merge(user);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 
 }

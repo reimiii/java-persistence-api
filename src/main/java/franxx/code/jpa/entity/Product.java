@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "products")
 @Data
@@ -27,5 +29,8 @@ public class Product {
     private Long price;
 
     private String description;
+
+    @ManyToMany(mappedBy = "likes")
+    private Collection<User> likedBy;
 
 }
