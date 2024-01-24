@@ -6,19 +6,18 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "brands")
 @Data
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
-public class Brand {
-
-    @Id
-    private String id;
+public class Brand extends AuditableEntity<String> {
 
     private String name;
 

@@ -238,3 +238,10 @@ create table transactions_debit
 
 select *
 from transactions_debit;
+
+alter table brands
+    add column created_at timestamp,
+    add column updated_at timestamp;
+
+select *
+from brands;
