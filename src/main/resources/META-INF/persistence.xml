@@ -25,6 +25,10 @@
         <class>franxx.code.jpa.entity.Payment</class>
         <class>franxx.code.jpa.entity.PaymentCreditCard</class>
         <class>franxx.code.jpa.entity.PaymentGopay</class>
+        <class>franxx.code.jpa.entity.Transaction</class>
+        <class>franxx.code.jpa.entity.TransactionCredit</class>
+        <class>franxx.code.jpa.entity.TransactionDebit</class>
+
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

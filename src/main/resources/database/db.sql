@@ -206,3 +206,35 @@ create table payments_credit_card
 
 select *
 from payments_credit_card;
+
+create table transactions
+(
+    id         varchar(100) not null primary key,
+    balance    bigint       not null,
+    created_at timestamp    not null
+) engine innodb;
+
+select *
+from transactions;
+
+create table transactions_credit
+(
+    id            varchar(100) not null primary key,
+    balance       bigint       not null,
+    created_at    timestamp    not null,
+    credit_amount bigint       not null
+) engine innodb;
+
+select *
+from transactions_credit;
+
+create table transactions_debit
+(
+    id           varchar(100) not null primary key,
+    balance      bigint       not null,
+    created_at   timestamp    not null,
+    debit_amount bigint       not null
+) engine innodb;
+
+select *
+from transactions_debit;

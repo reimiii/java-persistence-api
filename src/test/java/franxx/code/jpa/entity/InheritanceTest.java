@@ -7,6 +7,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InheritanceTest {
@@ -115,4 +117,75 @@ class InheritanceTest {
         entityManagerFactory.close();
     }
 
+    @Test
+    void tablePerClassInsert() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Transaction transaction1 = new Transaction();
+        transaction1.setId("t1");
+        transaction1.setBalance(100L);
+        transaction1.setCreatedAt(LocalDateTime.now());
+
+        TransactionCredit credit = new TransactionCredit();
+        credit.setId("c1");
+        credit.setBalance(1000L);
+        credit.setCreditAmount(200L);
+        credit.setCreatedAt(LocalDateTime.now());
+
+        TransactionDebit debit = new TransactionDebit();
+        debit.setId("d1");
+        debit.setBalance(2000L);
+        debit.setDebitAmount(319L);
+        debit.setCreatedAt(LocalDateTime.now());
+
+        entityManager.persist(transaction1);
+        entityManager.persist(credit);
+        entityManager.persist(debit);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void tablePerClassFind() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        TransactionCredit credit = entityManager.find(TransactionCredit.class, "c1");
+
+        TransactionDebit debit = entityManager.find(TransactionDebit.class, "d1");
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void tablePerClassFindParent() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        entityManager.find(Transaction.class, "t1");
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
