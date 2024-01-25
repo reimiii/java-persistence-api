@@ -41,7 +41,7 @@ public class JpaQueryLanguageTest {
     }
 
     @Test
-    void joinClauseFetch() {
+    void limitOffSet() {
 
         EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -49,17 +49,16 @@ public class JpaQueryLanguageTest {
 
         transaction.begin();
 
-        // eager join
-        TypedQuery<User> query = entityManager.createQuery(
-                "select u from User u join fetch u.likes l",
-                User.class
+        TypedQuery<Brand> query = entityManager.createQuery(
+                "select b from Brand b order by b.id",
+                Brand.class
         );
 
-        List<User> resultList = query.getResultList();
-        resultList.forEach(user -> {
-            System.out.println(user.getName() + " is liked: ");
-            user.getLikes().forEach(product -> System.out.println("product : " + product.getName()));
-        });
+        query.setMaxResults(10)
+                .setFirstResult(10)
+                .getResultList().forEach(
+                        brand -> System.out.println(brand.getId())
+                );
 
         transaction.commit();
 
@@ -153,4 +152,54 @@ public class JpaQueryLanguageTest {
         entityManager.close();
         entityManagerFactory.close();
     }
+
+    @Test
+    void insertRandomBrand() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        for (int i = 0; i < 100; i++) {
+            Brand brand = new Brand();
+            brand.setId(String.valueOf(i));
+            brand.setName("Brand " + i);
+            entityManager.persist(brand);
+        }
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void joinClauseFetch() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        // eager join
+        TypedQuery<User> query = entityManager.createQuery(
+                "select u from User u join fetch u.likes l",
+                User.class
+        );
+
+        List<User> resultList = query.getResultList();
+        resultList.forEach(user -> {
+            System.out.println(user.getName() + " is liked: ");
+            user.getLikes().forEach(product -> System.out.println("product : " + product.getName()));
+        });
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
 }
