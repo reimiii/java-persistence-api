@@ -253,3 +253,9 @@ select *
 from brands;
 
 show create table brands;
+
+create database jpa_test;
+
+use jpa_test;
+
+
