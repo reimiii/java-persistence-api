@@ -14,6 +14,10 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
+@NamedQueries({
+        @NamedQuery(name = "Brand.findAll", query = "select b from Brand b"),
+        @NamedQuery(name = "Brand.findAllByName", query = "select b from Brand b where b.name = :name")
+})
 public class Brand extends AuditableEntity<String> {
 
     private String name;

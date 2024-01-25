@@ -8,10 +8,7 @@ import franxx.code.jpa.util.JpaUtil;
 import jakarta.persistence.*;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class JpaQueryLanguageTest {
 
@@ -202,4 +199,26 @@ public class JpaQueryLanguageTest {
         entityManagerFactory.close();
     }
 
+    @Test
+    void namedQuery() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        TypedQuery<Brand> namedQuery = entityManager.createNamedQuery("Brand.findAllByName", Brand.class);
+
+        namedQuery.setParameter("name", "Brand 1")
+                .getResultList()
+                .forEach(
+                        brand -> System.out.println(brand.getName())
+                );
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
