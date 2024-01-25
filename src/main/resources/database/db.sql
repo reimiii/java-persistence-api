@@ -260,4 +260,6 @@ use jpa_test;
 
 use jpa;
 
+select *
+from members;
 
