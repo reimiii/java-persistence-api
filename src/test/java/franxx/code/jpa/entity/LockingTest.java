@@ -110,7 +110,7 @@ public class LockingTest {
         transaction.begin();
 
         Brand brand = entityManager.find(Brand.class, "nokia", LockModeType.PESSIMISTIC_WRITE);
-        brand.setName("Nokia demo two.. update..pessimistic");
+        brand.setName("Nokia demo two.. update..pessimistic mmmhh increment");
         brand.setUpdatedAt(LocalDateTime.now());
 
         entityManager.merge(brand);
