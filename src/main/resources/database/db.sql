@@ -258,4 +258,6 @@ create database jpa_test;
 
 use jpa_test;
 
+use jpa;
+
 
