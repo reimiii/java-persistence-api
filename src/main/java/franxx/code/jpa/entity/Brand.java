@@ -1,9 +1,6 @@
 package franxx.code.jpa.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,4 +22,7 @@ public class Brand extends AuditableEntity<String> {
 
     @OneToMany(mappedBy = "brand")
     private Collection<Product> products;
+
+    @Version
+    private Long version;
 }

@@ -245,3 +245,11 @@ alter table brands
 
 select *
 from brands;
+
+alter table brands
+    modify column version bigint;
+
+select *
+from brands;
+
+show create table brands;
