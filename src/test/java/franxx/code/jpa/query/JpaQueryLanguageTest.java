@@ -130,4 +130,27 @@ public class JpaQueryLanguageTest {
         entityManagerFactory.close();
     }
 
+    @Test
+    void orderByClause() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        TypedQuery<Brand> query = entityManager.createQuery(
+                "select b from Brand b order by b.name desc",
+                Brand.class
+        );
+
+        query.getResultList().forEach(brand -> {
+            System.out.println(brand.getName());
+        });
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
