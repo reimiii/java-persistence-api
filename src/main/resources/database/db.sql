@@ -263,3 +263,12 @@ use jpa;
 select *
 from members;
 
+select *
+from brands;
+
+select *
+from products;
+
+select *
+from users_like_products;
+
