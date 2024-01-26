@@ -264,11 +264,13 @@ select *
 from members;
 
 select *
-from brands;
-
-select *
 from products;
 
 select *
 from users_like_products;
+
+select *
+from brands
+where id = 'nokia';
+
 
