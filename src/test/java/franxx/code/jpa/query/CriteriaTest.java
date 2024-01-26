@@ -1,6 +1,7 @@
 package franxx.code.jpa.query;
 
 import franxx.code.jpa.entity.Brand;
+import franxx.code.jpa.entity.SimpleBrand;
 import franxx.code.jpa.util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -42,4 +43,64 @@ public class CriteriaTest {
         entityManager.close();
         entityManagerFactory.close();
     }
+
+    @Test
+    void criteriaQueryNonEntity() {
+
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteriaQuery = builder.createQuery(Object[].class);
+
+        Root<Brand> b = criteriaQuery.from(Brand.class);
+
+        // select b.id b.name from Brand b; in jpa query
+        criteriaQuery.select(builder.array(b.get("id"), b.get("name")));
+
+        entityManager.createQuery(criteriaQuery)
+                .getResultList()
+                .forEach(objects -> {
+                    System.out.println("-----");
+                    System.out.println("id: " + objects[0]);
+                    System.out.println("name: " + objects[1]);
+                });
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void criteriaQueryNonEntityConstructor() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<SimpleBrand> criteriaQuery = builder.createQuery(SimpleBrand.class);
+
+        Root<Brand> b = criteriaQuery.from(Brand.class);
+        criteriaQuery.select(builder.construct(SimpleBrand.class, b.get("id"), b.get("name")));
+
+        entityManager.createQuery(criteriaQuery)
+                .getResultList()
+                .forEach(simpleBrand -> {
+                    System.out.println(simpleBrand.getId() + " - " + simpleBrand.getName());
+                });
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
 }
