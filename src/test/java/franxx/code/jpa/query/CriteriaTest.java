@@ -103,4 +103,69 @@ public class CriteriaTest {
         entityManagerFactory.close();
     }
 
+    @Test
+    void criteriaWhereClause() { // default is using AND
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Brand> criteriaQuery = builder.createQuery(Brand.class);
+
+        Root<Brand> b = criteriaQuery.from(Brand.class);
+
+        criteriaQuery.select(b).where(
+                builder.equal(b.get("id"), "nokia"),
+                builder.isNotNull(b.get("createdAt"))
+        );
+
+        entityManager.createQuery(criteriaQuery)
+                .getResultList()
+                .forEach(
+                        brand -> System.out.println(brand.getId())
+                );
+
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void criteriaWhereClauseUsingOR() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Brand> criteriaQuery = builder.createQuery(Brand.class);
+
+        Root<Brand> b = criteriaQuery.from(Brand.class);
+
+        criteriaQuery.select(b).where(
+                builder.or(
+                        builder.equal(b.get("id"), "samsung"),
+                        builder.equal(b.get("id"), "nokia")
+                )
+        );
+
+        entityManager.createQuery(criteriaQuery)
+                .getResultList()
+                .forEach(
+                        brand -> System.out.println(brand.getId())
+                );
+
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
