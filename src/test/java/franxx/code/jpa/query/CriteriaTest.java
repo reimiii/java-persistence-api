@@ -277,4 +277,32 @@ public class CriteriaTest {
         entityManagerFactory.close();
     }
 
+    @Test
+    void criteriaNonQuery() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Brand> criteria = builder.createCriteriaUpdate(Brand.class);
+
+        Root<Brand> b = criteria.from(Brand.class);
+
+        criteria.set(b.get("name"), "Nokia")
+                .set(b.get("description"), "PT Nokia")
+                .where(builder.equal(b.get("id"), "nokia"));
+
+        int update = entityManager.createQuery(criteria).executeUpdate();
+        System.out.println("impact " + update);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+
 }
