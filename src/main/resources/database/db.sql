@@ -271,6 +271,6 @@ from users_like_products;
 
 select *
 from brands
-where id = 'nokia';
+where id = 'samsung';
 
 
