@@ -283,4 +283,57 @@ public class JpaQueryLanguageTest {
         entityManager.close();
         entityManagerFactory.close();
     }
+
+    @Test
+    void nativeQuery() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Query query = entityManager.createNativeQuery(
+                "select * from brands b where b.created_at is not null",
+                Brand.class
+        );
+
+        List<Brand> resultList = query.getResultList();
+
+        resultList.forEach(brand -> {
+            System.out.println(brand.getName());
+        });
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void namedNativeQuery() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        TypedQuery<Brand> query = entityManager.createNamedQuery("Brand.native.findAll", Brand.class);
+
+        query.getResultList()
+                .forEach(brand -> {
+                    System.out.println("--------");
+                    System.out.println(brand.getId());
+                    System.out.println(brand.getName());
+                    System.out.println(brand.getCreatedAt());
+                    System.out.println("--------");
+                });
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
 }

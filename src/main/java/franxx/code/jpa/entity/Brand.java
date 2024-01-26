@@ -18,6 +18,9 @@ import java.util.Collection;
         @NamedQuery(name = "Brand.findAll", query = "select b from Brand b"),
         @NamedQuery(name = "Brand.findAllByName", query = "select b from Brand b where b.name = :name")
 })
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "Brand.native.findAll", query = "select * from brands", resultClass = Brand.class)
+})
 public class Brand extends AuditableEntity<String> {
 
     private String name;
