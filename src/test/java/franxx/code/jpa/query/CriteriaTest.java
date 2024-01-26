@@ -236,4 +236,45 @@ public class CriteriaTest {
         entityManager.close();
         entityManagerFactory.close();
     }
+
+    @Test
+    void criteriaAggregateQuery() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> criteria = builder.createQuery(Object[].class);
+
+        Root<Product> p = criteria.from(Product.class);
+        Join<Product, Brand> b = p.join("brand");
+
+        // select b.id, min(p.price), max(p.price), avg(p.price) from Product p join p.brand b group by b.id having min(p.price) > 2
+        criteria.select(builder.array(
+                b.get("id"),
+                builder.min(p.get("price")),
+                builder.max(p.get("price")),
+                builder.avg(p.get("price"))
+        )).groupBy(b.get("id")).having(builder.greaterThan(builder.min(p.get("price")), 2));
+
+        entityManager.createQuery(criteria)
+                .getResultList()
+                .forEach(objects -> {
+                    System.out.println("============");
+                    System.out.println("Brand: " + objects[0]);
+                    System.out.println("min: " + objects[1]);
+                    System.out.println("max: " + objects[2]);
+                    System.out.println("avg: " + objects[3]);
+                });
+
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
 }
