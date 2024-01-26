@@ -228,4 +228,59 @@ public class JpaQueryLanguageTest {
         entityManagerFactory.close();
     }
 
+    @Test
+    void aggregateQuery() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        TypedQuery<Object[]> query = entityManager.createQuery(
+                "select min(p.price), max(p.price), avg(p.price) from Product p",
+                Object[].class
+        );
+
+        Object[] result = query.getSingleResult();
+        System.out.println("min: " + result[0]);
+        System.out.println("max: " + result[1]);
+        System.out.println("avg: " + result[2]);
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void aggregateQueryGroupByHaving() {
+
+        EntityManagerFactory entityManagerFactory = JpaUtil.getEntityManagerFactory();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        TypedQuery<Object[]> query = entityManager.createQuery(
+                "select b.id, min(p.price), max(p.price), avg(p.price) from Product p join p.brand b group by b.id having min(p.price) > :min",
+                Object[].class
+        );
+
+        query.setParameter("min", 1)
+                .getResultList()
+                .forEach(
+                        objects -> {
+                            System.out.println("brand: " + objects[0]);
+                            System.out.println("min: " + objects[1]);
+                            System.out.println("max: " + objects[2]);
+                            System.out.println("avg: " + objects[3]);
+                        }
+                );
+
+        transaction.commit();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
